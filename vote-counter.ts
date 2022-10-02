@@ -1,6 +1,8 @@
 import axios from "axios";
 
 type Data = {
+  pst: string;
+  psi: string;
   cand: Array<{
     nm: string;
     vap: string;
@@ -44,7 +46,7 @@ class VoteCounterBuilder {
       name: cand.nm.replace("&apos;", "'"),
       votes: new Intl.NumberFormat("pt-BR").format(Number(cand.vap)),
       votesNumber: Number(cand.vap),
-      percentage: `${Number(cand.pvap.replace(",", "."))}%`,
+      percentage: `${cand.pvap}%`,
     }));
     return this;
   }
@@ -78,10 +80,35 @@ class TableBuilder {
   }
 }
 
+class PercentageLogger {
+  private data: Data;
+  constructor(data: Data) {
+    this.data = data;
+  }
+  public log() {
+    console.log("-----------------------------------");
+    console.log("\n");
+    if (this.data.psi !== this.data.pst)
+      console.log(
+        "\x1b[33m%s\x1b[0m",
+        `Total de votos apurados: ${this.data.psi} ou ${this.data.pst}%`
+      );
+    else
+      console.log(
+        "\x1b[33m%s\x1b[0m",
+        `Total de votos apurados: ${this.data.psi}`
+      );
+
+    console.log("\n");
+    console.log("-----------------------------------");
+  }
+}
+
 async function main() {
   console.clear();
   const data = await DataFetcher.get();
   const results = new VoteCounterBuilder(data).build();
+  new PercentageLogger(data).log();
   new TableBuilder(results).build();
 }
 
