@@ -2,7 +2,6 @@
   "name": "vote-counter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "start": "ts-node vote-counter.ts"
   },
@@ -17,6 +16,9 @@
     "url": "https://github.com/OsmarJoseph/vote-counter/issues"
   },
   "homepage": "https://github.com/OsmarJoseph/vote-counter#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  },
   "devDependencies": {
     "@types/node": "^18.8.0",
     "ts-node": "^10.9.1",
